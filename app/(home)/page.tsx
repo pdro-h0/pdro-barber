@@ -7,6 +7,8 @@ import Header from "@/components/header";
 import Search from "./components/search";
 import BookingItem from "@/components/booking-item";
 import BarbershopItem from "./components/barbershop-item";
+import { Key } from "react";
+
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -27,12 +29,12 @@ export default async function Home() {
         <Search />
       </div>
 
-      <div className="px-5 mt-6">
+      {/* <div className="px-5 mt-6">
         <h2 className="text-xs mb-3 uppercase text-zinc-400 font-bold">
           Agendamentos
         </h2>
         <BookingItem />
-      </div>
+      </div> */}
 
       <div className="mt-6">
         <h2 className="px-5 text-lg mb-3 uppercase text-zinc-400 font-bold">
@@ -40,7 +42,7 @@ export default async function Home() {
         </h2>
 
         <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
+          {barbershops.map((barbershop: { id: Key | null | undefined; }) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
@@ -52,7 +54,7 @@ export default async function Home() {
         </h2>
 
         <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
+          {barbershops.map((barbershop: { id: Key | null | undefined; }) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
