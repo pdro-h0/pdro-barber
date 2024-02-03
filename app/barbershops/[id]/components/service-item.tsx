@@ -219,7 +219,7 @@ const ServiceItem = ({
                         <Button
                           variant={hour === time ? "default" : "outline"}
                           className="rounded-full"
-                          key="time"
+                          key={ time }
                           onClick={() => handleHourClick(time)}
                         >
                           {time}
