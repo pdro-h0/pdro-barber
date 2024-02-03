@@ -8,10 +8,28 @@ import Search from "./components/search";
 import BookingItem from "@/components/booking-item";
 import BarbershopItem from "./components/barbershop-item";
 import { Key } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 
 export default async function Home() {
+  const session = await getServerSession(authOptions)
+
   const barbershops = await db.barbershop.findMany({});
+
+  const confirmedBookings = session?.user ? await db.booking.findMany({
+    where: {
+      userId: (session.user as any).id,
+      date: {
+        gt: new Date()
+      }
+    },
+    include: {
+      service: true,
+      barbershop: true,
+    },
+  }) : []
+
   return (
     <div>
       <Header />
@@ -29,12 +47,17 @@ export default async function Home() {
         <Search />
       </div>
 
-      {/* <div className="px-5 mt-6">
-        <h2 className="text-xs mb-3 uppercase text-zinc-400 font-bold">
+      <div className="mt-6">
+        <h2 className="pl-5 text-xs mb-3 uppercase text-zinc-400 font-bold">
           Agendamentos
         </h2>
-        <BookingItem />
-      </div> */}
+
+        <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {confirmedBookings.map((booking: { id: Key | null | undefined; }) => (
+            <BookingItem booking={booking} key={booking.id} />
+          ))}
+        </div>
+      </div>
 
       <div className="mt-6">
         <h2 className="px-5 text-lg mb-3 uppercase text-zinc-400 font-bold">
