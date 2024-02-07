@@ -10,5 +10,6 @@ export const cancelBoonking = async (bookingId: string) => {
     },
   });
 
+  revalidatePath("/");
   revalidatePath("/bookings");
 };

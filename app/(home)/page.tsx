@@ -11,24 +11,25 @@ import { Key } from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
-
 export default async function Home() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   const barbershops = await db.barbershop.findMany({});
 
-  const confirmedBookings = session?.user ? await db.booking.findMany({
-    where: {
-      userId: (session.user as any).id,
-      date: {
-        gt: new Date()
-      }
-    },
-    include: {
-      service: true,
-      barbershop: true,
-    },
-  }) : []
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          userId: (session.user as any).id,
+          date: {
+            gt: new Date(),
+          },
+        },
+        include: {
+          service: true,
+          barbershop: true,
+        },
+      })
+    : [];
 
   return (
     <div>
@@ -47,17 +48,21 @@ export default async function Home() {
         <Search />
       </div>
 
-      <div className="mt-6">
-        <h2 className="pl-5 text-xs mb-3 uppercase text-zinc-400 font-bold">
-          Agendamentos
-        </h2>
+      {confirmedBookings.length > 0 && (
+        <div className="mt-6">
+          <h2 className="pl-5 text-xs mb-3 uppercase text-zinc-400 font-bold">
+            Agendamentos
+          </h2>
 
-        <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking: { id: Key | null | undefined; }) => (
-            <BookingItem booking={booking} key={booking.id} />
-          ))}
+          <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+            {confirmedBookings.map(
+              (booking: { id: Key | null | undefined }) => (
+                <BookingItem booking={booking} key={booking.id} />
+              )
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="mt-6">
         <h2 className="px-5 text-lg mb-3 uppercase text-zinc-400 font-bold">
@@ -65,7 +70,7 @@ export default async function Home() {
         </h2>
 
         <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop: { id: Key | null | undefined; }) => (
+          {barbershops.map((barbershop: { id: Key | null | undefined }) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
@@ -77,7 +82,7 @@ export default async function Home() {
         </h2>
 
         <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop: { id: Key | null | undefined; }) => (
+          {barbershops.map((barbershop: { id: Key | null | undefined }) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
