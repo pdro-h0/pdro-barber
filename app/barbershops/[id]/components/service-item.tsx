@@ -18,6 +18,7 @@ import Image from "next/image";
 import React, { useEffect, useMemo } from "react";
 import { generateDayTimeList } from "../../helpers/hours";
 import { format } from "date-fns/format";
+import { addDays } from "date-fns/addDays";
 import { setMinutes } from "date-fns/setMinutes";
 import { setHours } from "date-fns/setHours";
 import { saveBooking } from "../../actions/save-booking";
@@ -25,6 +26,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getDayBookings } from "../../actions/get-day-bookings";
+import { ScrollBar, ScrollArea } from "@/components/ui/scroll-area";
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -136,8 +138,8 @@ const ServiceItem = ({
   };
 
   return (
-    <Card>
-      <CardContent className="p-3 max-[320px]:p-1 w-full">
+    <Card className="lg:flex-1">
+      <CardContent className="p-3 max-[320px]:p-1 w-full ">
         <div className="flex gap-4 items-center w-full">
           <div className="relative min-h-[110px] max-h-[110px] min-w-[110px] max-w-[110px]">
             <Image
@@ -174,19 +176,19 @@ const ServiceItem = ({
                   </Button>
                 </SheetTrigger>
 
-                <SheetContent className="p-0">
+                <SheetContent className="p-0 lg:overflow-y-auto lg:pb-5 lg:[&::-webkit-scrollbar]:hidden">
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="py-6">
+                  <div className="py-6 lg:py-0">
                     <Calendar
                       mode="single"
                       selected={date}
                       onSelect={handleDateClick}
-                      className="rounded-md mt-6"
+                      className="rounded-md mt-6 lg:hidden"
                       locale={ptBR}
-                      fromDate={new Date()}
+                      fromDate={addDays(new Date(), 1)}
                       styles={{
                         head_cell: {
                           width: "100%",
@@ -211,21 +213,35 @@ const ServiceItem = ({
                         },
                       }}
                     />
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={handleDateClick}
+                      className="rounded-md mt-1 max-lg:hidden flex justify-center"
+                      locale={ptBR}
+                      fromDate={addDays(new Date(), 1)}
+                    />
                   </div>
 
                   {date && (
-                    <div className="py-6 gap-3 px-5 border-t border-solid border-secondary flex overflow-auto [&::-webkit-scrollbar]:hidden">
-                      {timeList.map((time) => (
-                        <Button
-                          variant={hour === time ? "default" : "outline"}
-                          className="rounded-full"
-                          key={ time }
-                          onClick={() => handleHourClick(time)}
-                        >
-                          {time}
-                        </Button>
-                      ))}
-                    </div>
+                    <ScrollArea>
+                      <div className="py-6 gap-3 px-5 border-t border-solid border-secondary flex overflow-auto [&::-webkit-scrollbar]:hidden">
+                        {timeList.map((time) => (
+                          <Button
+                            variant={hour === time ? "default" : "outline"}
+                            className="rounded-full "
+                            onClick={() => handleHourClick(time)}
+                            key={time}
+                          >
+                            {time}
+                          </Button>
+                        ))}
+                      </div>
+                      <ScrollBar
+                        orientation="horizontal"
+                        className="max-lg:hidden mt-2"
+                      />
+                    </ScrollArea>
                   )}
 
                   <div className="py-6 px-5 border-t border-solid border-secondary">
@@ -274,6 +290,7 @@ const ServiceItem = ({
                     <Button
                       onClick={handleBookingSubmit}
                       disabled={!hour || !date || submitIsLoading}
+                      className="lg:w-full"
                     >
                       {submitIsLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

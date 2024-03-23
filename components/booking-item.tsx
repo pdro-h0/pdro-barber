@@ -64,7 +64,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Card className="min-w-full">
+        <Card className="min-w-full cursor-pointer">
           <CardContent className="flex p-0">
             <div className="flex flex-col gap-2 pl-5 py-5 flex-[3]">
               <Badge
@@ -108,6 +108,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             <Image
               src="/barbershop-map.png"
               fill
+              sizes="100vw"
               alt={booking.barbershop.name}
             />
             <div className="w-full absolute bottom-4 left-0 px-5">

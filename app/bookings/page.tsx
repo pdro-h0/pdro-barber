@@ -1,12 +1,11 @@
 import React from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Header from "@/components/header";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/prisma";
 import BookingItem from "@/components/booking-item";
-import { isFuture } from "date-fns/isFuture";
-import { isPast } from "date-fns/isPast";
+
 
 const Bookings = async () => {
   const session = await getServerSession(authOptions);
