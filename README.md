@@ -33,7 +33,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-O "PDR-Barber" é um .
+O “PDR-Barber” é um sistema de reservas de barbearias, onde o usuário poderá pesquisar por barbearias e marcar e seus serviços.
 
 - [Acesse o projeto finalizado, online](https://pdro-barber.vercel.app/)
 ---
