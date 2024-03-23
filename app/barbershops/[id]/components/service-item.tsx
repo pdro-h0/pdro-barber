@@ -138,7 +138,7 @@ const ServiceItem = ({
   };
 
   return (
-    <Card className="lg:flex-1">
+    <Card>
       <CardContent className="p-3 max-[320px]:p-1 w-full ">
         <div className="flex gap-4 items-center w-full">
           <div className="relative min-h-[110px] max-h-[110px] min-w-[110px] max-w-[110px]">
@@ -176,7 +176,7 @@ const ServiceItem = ({
                   </Button>
                 </SheetTrigger>
 
-                <SheetContent className="p-0 lg:overflow-y-auto lg:pb-5 lg:[&::-webkit-scrollbar]:hidden">
+                <SheetContent className="p-0 overflow-y-auto pb-5 [&::-webkit-scrollbar]:hidden">
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
